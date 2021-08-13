@@ -47,7 +47,7 @@ def eval(df):
 	Calculates mse, mape, stdev of error % for given df.
 
 	Parameters:
-		data_df (pd dataframe): # of passengers per month
+		df (pd dataframe): # of passengers per month
 	'''
 	df['residuals'] = df['predict'] - df[YY]
 	df['error_pct'] = df['residuals'] / df[YY]
@@ -65,7 +65,7 @@ def split_dataset(df, test=.2, validate=.1):
 	Deterministically splits df into train, test, and validation sets.
 
 	Parameters:
-		data_df (pd dataframe): # of passengers per month
+		df (pd dataframe): # of passengers per month
 		test (float): % of samples for test set
 		validate (float): % of samples for validation set
 	Returns:
@@ -92,7 +92,6 @@ def fit_prophet(train, test, plot=PLOT_BOOL):
 		model (fbprophet object): fitted model on training data
 		plot (boolean): control plotting
 	'''
-
 	#Format for fbprophet
 	train_p_format = train.rename(columns={XX:'ds', YY:'y'})
 	test_p_format = test.rename(columns={XX:'ds', YY:'y'})
@@ -188,13 +187,9 @@ def predict(model, df, plot=PLOT_BOOL):
 		plt.show()
 
 
-
 def main():
 	'''
 	Plots data, splits data into training/test sets, fits model, predicts.
-
-	Parameters:
-		data_df (pd dataframe): # of passengers per month
 	'''
 	custom_date_parser = lambda x: datetime.strptime(x, "%Y-%m")
 	df = pd.read_csv(DATA_PATH, engine='python', parse_dates=['Month'], 
@@ -206,9 +201,6 @@ def main():
 	predict(model, df)
 
 
-
 if __name__ == "__main__":
 	main()
-
-	
 
