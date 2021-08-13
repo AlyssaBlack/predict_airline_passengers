@@ -9,11 +9,11 @@ from datetime import datetime
 from fbprophet import Prophet
 
 
-DATA_PATH = '/Users/ABlackburn/Documents/AirPassengers.csv'
+DATA_PATH = 'AirPassengers.csv'
 SEED = 0
 XX = 'Month'
 YY = '#Passengers'
-OUTPUT_FILE = '/Users/ABlackburn/Documents/AirPassenger_predictions.csv'
+OUTPUT_FILE = 'AirPassenger_predictions.csv'
 H = 12 # Number of observations into the future
 PLOT_BOOL = True #Can turn off all plotting
 YY_pretty_plot = 'Number of Passengers per Month'
