@@ -163,8 +163,9 @@ def predict(model, df, plot=PLOT_BOOL):
 		plot (boolean): control plotting
 	'''
 	#Future ti observations + predictions
-	future = model.make_future_dataframe(periods=H, include_history=False, 
+	future = model.make_future_dataframe(periods=H+1, include_history=False, 
 				freq="MS")
+	future = future.iloc[1: , :]
 	future_predict = model.predict(future)
 
 	#Predictions for all given data
@@ -181,7 +182,9 @@ def predict(model, df, plot=PLOT_BOOL):
 				how="left").rename(columns={'ds':XX, 'yhat':'predict', 
 				'y':YY})
 	
+	#Format and write predictions
 	all_df = all_df.drop(columns=["_month", "Year"])
+	all_df['Month'] = pd.to_datetime(all_df['Month'],format='%Y-%m-%d', errors='coerce').dt.to_period('m')
 	all_df = all_df.set_index('Month')
 	all_df.to_csv(OUTPUT_FILE)
 
@@ -203,10 +206,13 @@ def main():
 	custom_date_parser = lambda x: datetime.strptime(x, "%Y-%m")
 	df = pd.read_csv(DATA_PATH, engine='python', parse_dates=['Month'], 
 		date_parser=custom_date_parser)
+
 	explore_plot(df)
 	train, test, validate = split_dataset(df)
+
 	print("Training Model...")
 	model = fit_prophet(train, test)
+
 	print("Evaluating on Validation Set...")
 	eval_model(model, validate)
 	predict(model, df)
