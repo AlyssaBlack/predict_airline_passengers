@@ -126,6 +126,10 @@ def fit_prophet(train, test, plot=PLOT_BOOL):
 		tt_predicted = model.predict(tt_p_format)
 
 		model.plot(tt_predicted)
+		fig = plt.gcf()
+		fig.set_size_inches(11, 7)
+		plt.subplots_adjust(top=0.9)
+		plt.title('Fitted Model on Train & Test Sets')
 		plt.xlabel('Date')
 		plt.ylabel(YY_pretty_plot)
 		plt.show()
@@ -177,10 +181,15 @@ def predict(model, df, plot=PLOT_BOOL):
 				how="left").rename(columns={'ds':XX, 'yhat':'predict', 
 				'y':YY})
 	
+	all_df = all_df.drop(columns=["_month", "Year"])
+	all_df = all_df.set_index('Month')
 	all_df.to_csv(OUTPUT_FILE)
 
 	if plot:
 		model.plot(all_predict)
+		fig = plt.gcf()
+		fig.set_size_inches(11, 7)
+		plt.subplots_adjust(top=0.9)
 		plt.xlabel('Date')
 		plt.ylabel(YY_pretty_plot)
 		plt.title('Predictions on Historical and Future Observations')
