@@ -205,7 +205,9 @@ def main():
 		date_parser=custom_date_parser)
 	explore_plot(df)
 	train, test, validate = split_dataset(df)
+	print("Training Model...")
 	model = fit_prophet(train, test)
+	print("Evaluating on Validation Set...")
 	eval_model(model, validate)
 	predict(model, df)
 
